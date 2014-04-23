@@ -1,18 +1,29 @@
 {
-	"name": "jquery-boilerplate",
-	"version": "3.3.3",
-	"homepage": "http://jqueryboilerplate.com",
-	"authors": [
-		"Zeno Rocha <hi@zenorocha.com>"
-	],
-	"description": "A jump-start for jQuery plugins development.",
-	"main": "src/jquery.boilerplate.js",
+	"name": "contact-congress",
+	"title": "Contact Congress",
+	"description": "A widget for building forms for contacting congress.",
 	"keywords": [
-		"jquery",
-		"plugin",
-		"boilerplate",
-		"jquery-plugin",
-		"jquery-boilerplate"
+		"contact congress"
 	],
-	"license": "MIT"
+	"version": "0.0.1",
+	"author": {
+		"name": "Thomas Davis",
+		"email": "thomasalwyndavis@gmail.com",
+		"url": "https://github.com/thomasdavis"
+	},
+	"maintainers": [
+	],
+	"licenses": [
+		{
+			"type": "TBD",
+			"url": ""
+		}
+	],
+	"bugs": "https://github.com/efforg/contact-congress.js/issues",
+	"homepage": "https://github.com/efforg/contact-congress.js",
+	"docs": "https://github.com/efforg/contact-congress.js#readme",
+	"download": "https://github.com/efforg/contact-congress.js/archive/master.zip",
+	"dependencies": {
+		"jquery": ">=1.4"
+	}
 }

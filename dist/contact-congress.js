@@ -1,10 +1,10 @@
 /*
- *  jQuery Boilerplate - v3.3.3
- *  A jump-start for jQuery plugins development.
- *  http://jqueryboilerplate.com
+ *  Contact Congress - v0.0.1
+ *  A widget for building forms for contacting congress.
+ *  https://github.com/efforg/contact-congress.js
  *
- *  Made by Zeno Rocha
- *  Under MIT License
+ *  Made by Thomas Davis
+ *  Under TBD License
  */
 // the semi-colon before function invocation is a safety net against concatenated
 // scripts and/or other plugins which may not be closed properly.
