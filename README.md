@@ -1,4 +1,5 @@
-contact-congress.js
-===================
+# Contact Congress Form Builder
 
-A javascript widget which can construct plain forms that submit to a contact-congress server.
+This is a jQuery plugin to build the form for contacting congress
+
+* First version supports passing of one bioguideid
