@@ -1,0 +1,29 @@
+{
+	"name": "contact-congress",
+	"title": "Contact Congress",
+	"description": "A widget for building forms for contacting congress.",
+	"keywords": [
+		"contact congress"
+	],
+	"version": "0.0.1",
+	"author": {
+		"name": "Thomas Davis",
+		"email": "thomasalwyndavis@gmail.com",
+		"url": "https://github.com/thomasdavis"
+	},
+	"maintainers": [
+	],
+	"licenses": [
+		{
+			"type": "TBD",
+			"url": ""
+		}
+	],
+	"bugs": "https://github.com/efforg/contact-congress.js/issues",
+	"homepage": "https://github.com/efforg/contact-congress.js",
+	"docs": "https://github.com/efforg/contact-congress.js#readme",
+	"download": "https://github.com/efforg/contact-congress.js/archive/master.zip",
+	"dependencies": {
+		"jquery": ">=1.4"
+	}
+}
