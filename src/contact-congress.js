@@ -80,6 +80,7 @@
 
       // Attach submit button
       var submitButton = $('<input type="submit"/>');
+      submitButton.addClass('btn');
       form.append(submitButton);
 
       $(that.element).append(form);
@@ -102,16 +103,56 @@
       }
 
       // Generate the input
+      if(field.options_hash === null) {
+	      var input = $('<input type="text" />')
+	        .attr('placeholder', label_name);
+      } else {
+      	var input = $('<select/>');
 
-      var input = $('<input type="text" />')
-        .addClass('form-control')
-        .attr('placeholder', label_name);
+        // If options_hash is an array of objects
+      	field.options = [];
+
+        if(field.options_hash && $.isArray(field.options_hash) && typeof field.options_hash[0] === 'object') {
+          var temp_options_hash = {};
+          $.each(field.options_hash, function(option, key){
+            // Loop through properties of nested object
+            $.each(option, function (prop, propName) {
+              temp_options_hash[propName] = prop;
+            });
+          });
+          field.options_hash = temp_options_hash;
+        } 
+        // If options_hash an object?
+        if(field.options_hash && !$.isArray(field.options_hash)) {
+         $.each(field.options_hash, function(option, key){
+            field.options.push({name: key, value: option});
+          });
+          delete field.options_hash;
+        };
+        console.log(typeof field.options_hash)
+        if(typeof field.options_hash === 'string' || !field.options_hash) {
+        	field.options_hash = [];
+        }
+      	$.each(field.options_hash, function(key, option) {
+      		var optionEl = $('<option/>')
+      										.attr('value', option)
+      									  .text(option);
+      		input.append(optionEl);
+      	});
+      	$.each(field.options, function(key, option) {
+      		var optionEl = $('<option/>')
+      										.attr('value', option.key)
+      									  .text(option.value);
+      		input.append(optionEl);
+      	});
+      }
+	    input.addClass('form-control')
 
       form_group.append(input);
       return form_group;
     },
     groupCommonFields: function(data) {
-      // TODO - This needs a refactor, don't think this was done
+      // TODO - This needs a refactor, don't think this was done well
       // The following clumsy logic, compiles the groupedData object below
       var that = this;
       var groupedData = {
@@ -129,13 +170,20 @@
         $.each(this.settings.bioguide_ids, function(index, bioguide_id) {
           var legislator = data[bioguide_id];
           $.each(legislator.required_actions, function(index, field) {
-
-            if (typeof common_field_counts[field.value] === 'undefined') {
-              common_field_counts[field.value] = [bioguide_id];
-            } else {
-              common_field_counts[field.value].push(bioguide_id);
-            }
-
+          	if(field.options_hash === null) {
+          		// Option hashes make it difficult for their to be a common field
+	            if (typeof common_field_counts[field.value] === 'undefined') {
+	              common_field_counts[field.value] = [bioguide_id];
+	            } else {
+	              common_field_counts[field.value].push(bioguide_id);
+	            }
+	          } else {
+              if (typeof groupedData.individual_fields[bioguide_id] === 'undefined') {
+                groupedData.individual_fields[bioguide_id] = [field];
+              } else {
+                groupedData.individual_fields[bioguide_id].push(field);
+              }
+	          }
           });
         });
 
@@ -146,7 +194,8 @@
           // Common fields should have all legislators onboard
           if (bioguide_ids.length > 1) {
             groupedData.common_fields.push({
-              value: field
+              value: field,
+              options_hash: null
             });
           } else {
             $.each(bioguide_ids, function(index, bioguide_id) {
