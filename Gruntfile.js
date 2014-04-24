@@ -47,21 +47,12 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// CoffeeScript compilation
-		coffee: {
-			compile: {
-				files: {
-					"dist/contact-congress.js": "src/contact-congress.coffee"
-				}
-			}
-		}
 
 	});
 
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-contrib-coffee");
 
 	grunt.registerTask("default", ["jshint", "concat", "uglify"]);
 	grunt.registerTask("travis", ["jshint"]);

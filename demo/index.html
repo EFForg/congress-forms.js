@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Contact Congress</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-		<script src="../src/contact-congress.js"></script>
-	</head>
-	<body>
-		<div id="element"></div>
-		<script>
-			$(function() {
-				$("#element").defaultPluginName({
-					propertyName: "a custom value"
-				});
-			});
-		</script>
-	</body>
+
+<head>
+    <title>Contact Congress</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="../src/contact-congress.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-md-3">
+            <div id="element"></div>
+        </div>
+    </div>
+    <script>
+    $(function() {
+        $("#element").contactCongress({
+            bioguide_ids: ['P000197', 'N000147', 'N000015']
+        });
+    });
+    </script>
+</body>
+
 </html>
