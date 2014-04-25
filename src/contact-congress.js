@@ -69,13 +69,13 @@
 
       // Generate a <fieldset> for each extra legislator fields
       $.each(groupedData.individual_fields, function(legislator, fields) {
-      	var fieldset = $('<fieldset/>');
-      	fieldset.append('<legend>' + legislator + '</legend>');
-	      $.each(fields, function(index, field) {
-	        var form_group = that.generateFormGroup(field);
-	        fieldset.append(form_group);
-	      });
-	      form.append(fieldset);
+        var fieldset = $('<fieldset/>');
+        fieldset.append('<legend>' + legislator + '</legend>');
+        $.each(fields, function(index, field) {
+          var form_group = that.generateFormGroup(field);
+          fieldset.append(form_group);
+        });
+        form.append(fieldset);
       })
 
       // Attach submit button
@@ -103,50 +103,59 @@
       }
 
       // Generate the input
-      if(field.options_hash === null) {
-	      var input = $('<input type="text" />')
-	        .attr('placeholder', label_name);
-      } else {
-      	var input = $('<select/>');
+      if (field.options_hash !== null || field.value === '$ADDRESS_STATE_POSTAL_ABBREV' || field.value === '$ADDRESS_STATE') {
 
+        var input = $('<select/>');
+
+        field.options = [];
+        if(field.value === '$ADDRESS_STATE_POSTAL_ABBREV' || field.value === '$ADDRESS_STATE') {
+        	console.log('asd');
+          field.options = that._data.STATES;
+          delete field.options_hash;
+        }
         // If options_hash is an array of objects
-      	field.options = [];
-
-        if(field.options_hash && $.isArray(field.options_hash) && typeof field.options_hash[0] === 'object') {
+        if (field.options_hash && $.isArray(field.options_hash) && typeof field.options_hash[0] === 'object') {
           var temp_options_hash = {};
-          $.each(field.options_hash, function(option, key){
+          $.each(field.options_hash, function(option, key) {
             // Loop through properties of nested object
-            $.each(option, function (prop, propName) {
+            $.each(option, function(prop, propName) {
               temp_options_hash[propName] = prop;
             });
           });
           field.options_hash = temp_options_hash;
-        } 
+        }
         // If options_hash an object?
-        if(field.options_hash && !$.isArray(field.options_hash)) {
-         $.each(field.options_hash, function(option, key){
-            field.options.push({name: key, value: option});
+        if (field.options_hash && !$.isArray(field.options_hash)) {
+          $.each(field.options_hash, function(option, key) {
+            field.options.push({
+              name: option,
+              value: key
+            });
           });
           delete field.options_hash;
         };
         console.log(typeof field.options_hash)
-        if(typeof field.options_hash === 'string' || !field.options_hash) {
-        	field.options_hash = [];
+        if (typeof field.options_hash === 'string' || !field.options_hash) {
+          field.options_hash = [];
         }
-      	$.each(field.options_hash, function(key, option) {
-      		var optionEl = $('<option/>')
-      										.attr('value', option)
-      									  .text(option);
-      		input.append(optionEl);
-      	});
-      	$.each(field.options, function(key, option) {
-      		var optionEl = $('<option/>')
-      										.attr('value', option.key)
-      									  .text(option.value);
-      		input.append(optionEl);
-      	});
+        $.each(field.options_hash, function(key, option) {
+          var optionEl = $('<option/>')
+            .attr('value', option)
+            .text(option);
+          input.append(optionEl);
+        });
+        $.each(field.options, function(key, option) {
+        	console.log(option);
+          var optionEl = $('<option/>')
+            .attr('value', option.value)
+            .text(option.name);
+          input.append(optionEl);
+        });
+      } else {
+        var input = $('<input type="text" />')
+          .attr('placeholder', label_name);
       }
-	    input.addClass('form-control')
+      input.addClass('form-control')
 
       form_group.append(input);
       return form_group;
@@ -170,20 +179,20 @@
         $.each(this.settings.bioguide_ids, function(index, bioguide_id) {
           var legislator = data[bioguide_id];
           $.each(legislator.required_actions, function(index, field) {
-          	if(field.options_hash === null) {
-          		// Option hashes make it difficult for their to be a common field
-	            if (typeof common_field_counts[field.value] === 'undefined') {
-	              common_field_counts[field.value] = [bioguide_id];
-	            } else {
-	              common_field_counts[field.value].push(bioguide_id);
-	            }
-	          } else {
+            if (field.options_hash === null) {
+              // Option hashes make it difficult for their to be a common field
+              if (typeof common_field_counts[field.value] === 'undefined') {
+                common_field_counts[field.value] = [bioguide_id];
+              } else {
+                common_field_counts[field.value].push(bioguide_id);
+              }
+            } else {
               if (typeof groupedData.individual_fields[bioguide_id] === 'undefined') {
                 groupedData.individual_fields[bioguide_id] = [field];
               } else {
                 groupedData.individual_fields[bioguide_id].push(field);
               }
-	          }
+            }
           });
         });
 
@@ -201,11 +210,14 @@
             $.each(bioguide_ids, function(index, bioguide_id) {
               if (typeof groupedData.individual_fields[bioguide_id] === 'undefined') {
                 groupedData.individual_fields[bioguide_id] = [{
-                  value: field
+                  value: field,
+                  options_hash: null
                 }];
               } else {
                 groupedData.individual_fields[bioguide_id].push({
-                  value: field
+                  value: field,
+                  options_hash: null
+
                 });
               }
             });
@@ -229,6 +241,186 @@
       return $.map(string_arr, function(word) {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       }).join(" ");
+    },
+    _data: {
+      STATES: [{
+        name: 'ALABAMA',
+        value: 'AL'
+      }, {
+        name: 'ALASKA',
+        value: 'AK'
+      }, {
+        name: 'AMERICAN SAMOA',
+        value: 'AS'
+      }, {
+        name: 'ARIZONA',
+        value: 'AZ'
+      }, {
+        name: 'ARKANSAS',
+        value: 'AR'
+      }, {
+        name: 'CALIFORNIA',
+        value: 'CA'
+      }, {
+        name: 'COLORADO',
+        value: 'CO'
+      }, {
+        name: 'CONNECTICUT',
+        value: 'CT'
+      }, {
+        name: 'DELAWARE',
+        value: 'DE'
+      }, {
+        name: 'DISTRICT OF COLUMBIA',
+        value: 'DC'
+      }, {
+        name: 'FEDERATED STATES OF MICRONESIA',
+        value: 'FM'
+      }, {
+        name: 'FLORIDA',
+        value: 'FL'
+      }, {
+        name: 'GEORGIA',
+        value: 'GA'
+      }, {
+        name: 'GUAM',
+        value: 'GU'
+      }, {
+        name: 'HAWAII',
+        value: 'HI'
+      }, {
+        name: 'IDAHO',
+        value: 'ID'
+      }, {
+        name: 'ILLINOIS',
+        value: 'IL'
+      }, {
+        name: 'INDIANA',
+        value: 'IN'
+      }, {
+        name: 'IOWA',
+        value: 'IA'
+      }, {
+        name: 'KANSAS',
+        value: 'KS'
+      }, {
+        name: 'KENTUCKY',
+        value: 'KY'
+      }, {
+        name: 'LOUISIANA',
+        value: 'LA'
+      }, {
+        name: 'MAINE',
+        value: 'ME'
+      }, {
+        name: 'MARSHALL ISLANDS',
+        value: 'MH'
+      }, {
+        name: 'MARYLAND',
+        value: 'MD'
+      }, {
+        name: 'MASSACHUSETTS',
+        value: 'MA'
+      }, {
+        name: 'MICHIGAN',
+        value: 'MI'
+      }, {
+        name: 'MINNESOTA',
+        value: 'MN'
+      }, {
+        name: 'MISSISSIPPI',
+        value: 'MS'
+      }, {
+        name: 'MISSOURI',
+        value: 'MO'
+      }, {
+        name: 'MONTANA',
+        value: 'MT'
+      }, {
+        name: 'NEBRASKA',
+        value: 'NE'
+      }, {
+        name: 'NEVADA',
+        value: 'NV'
+      }, {
+        name: 'NEW HAMPSHIRE',
+        value: 'NH'
+      }, {
+        name: 'NEW JERSEY',
+        value: 'NJ'
+      }, {
+        name: 'NEW MEXICO',
+        value: 'NM'
+      }, {
+        name: 'NEW YORK',
+        value: 'NY'
+      }, {
+        name: 'NORTH CAROLINA',
+        value: 'NC'
+      }, {
+        name: 'NORTH DAKOTA',
+        value: 'ND'
+      }, {
+        name: 'NORTHERN MARIANA ISLANDS',
+        value: 'MP'
+      }, {
+        name: 'OHIO',
+        value: 'OH'
+      }, {
+        name: 'OKLAHOMA',
+        value: 'OK'
+      }, {
+        name: 'OREGON',
+        value: 'OR'
+      }, {
+        name: 'PALAU',
+        value: 'PW'
+      }, {
+        name: 'PENNSYLVANIA',
+        value: 'PA'
+      }, {
+        name: 'PUERTO RICO',
+        value: 'PR'
+      }, {
+        name: 'RHODE ISLAND',
+        value: 'RI'
+      }, {
+        name: 'SOUTH CAROLINA',
+        value: 'SC'
+      }, {
+        name: 'SOUTH DAKOTA',
+        value: 'SD'
+      }, {
+        name: 'TENNESSEE',
+        value: 'TN'
+      }, {
+        name: 'TEXAS',
+        value: 'TX'
+      }, {
+        name: 'UTAH',
+        value: 'UT'
+      }, {
+        name: 'VERMONT',
+        value: 'VT'
+      }, {
+        name: 'VIRGIN ISLANDS',
+        value: 'VI'
+      }, {
+        name: 'VIRGINIA',
+        value: 'VA'
+      }, {
+        name: 'WASHINGTON',
+        value: 'WA'
+      }, {
+        name: 'WEST VIRGINIA',
+        value: 'WV'
+      }, {
+        name: 'WISCONSIN',
+        value: 'WI'
+      }, {
+        name: 'WYOMING',
+        value: 'WY'
+      }]
     }
   };
 
