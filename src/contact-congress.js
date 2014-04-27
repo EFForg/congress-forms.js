@@ -8,10 +8,13 @@
   var defaults = {
     contactCongressServer: 'http://ec2-54-215-28-56.us-west-1.compute.amazonaws.com:3000',
     labels: true,
-    bioguide_ids: []
-    // PLACEHOLDER - inputClasses
-    // PLACEHOLDER - labelClasses
-    // PLACEHOLDER - formClasses
+    bioguide_ids: [],
+    labelClasses: '',
+    textInputClasses: 'form-control',
+    formClasses: 'form',
+    selectInputClasses: 'form-control',
+    formGroupClasses: 'form-group',
+    submitClasses: 'btn'
   };
 
   // The actual plugin constructor
@@ -29,7 +32,7 @@
     init: function() {
       var that = this;
 
-      var form = $('<form/>').addClass('form');
+      var form = $('<form/>').addClass(this.settings.formClasses);
       this.retrieveFormElements(form);
 
     },
@@ -60,7 +63,7 @@
 
       // Generate a <fieldset> for common fields
       var commonFieldsFieldSet = $('<fieldset/>');
-      commonFieldsFieldSet.append('<legend>Common Fields</legend>');
+      //commonFieldsFieldSet.append('<legend>Common Fields</legend>');
       $.each(required_actions, function(index, field) {
         var form_group = that.generateFormGroup(field);
         commonFieldsFieldSet.append(form_group);
@@ -70,7 +73,7 @@
       // Generate a <fieldset> for each extra legislator fields
       $.each(groupedData.individual_fields, function(legislator, fields) {
         var fieldset = $('<fieldset/>');
-        fieldset.append('<legend>' + legislator + '</legend>');
+        //fieldset.append('<legend>' + legislator + '</legend>');
         $.each(fields, function(index, field) {
           var form_group = that.generateFormGroup(field);
           fieldset.append(form_group);
@@ -80,7 +83,7 @@
 
       // Attach submit button
       var submitButton = $('<input type="submit"/>');
-      submitButton.addClass('btn');
+      submitButton.addClass(that.settings.submitClasses);
       form.append(submitButton);
 
       $(that.element).append(form);
@@ -91,14 +94,16 @@
       var field_name = field.value;
 
       // Create a container for each label and input, defaults to bootstrap classes
-      var form_group = $('<div/>').addClass('form-group');
+      var form_group = $('<div/>').addClass(this.settings.formGroupClasses);
 
 
       // Generate the label
       if (that.settings.labels) {
         var label = $('<label/>')
           .text(label_name)
-          .attr('for', field_name);
+          .attr('for', field_name)
+          .addClass(this.settings.labelClasses);
+
         form_group.append(label);
       }
 
@@ -106,10 +111,10 @@
       if (field.options_hash !== null || field.value === '$ADDRESS_STATE_POSTAL_ABBREV' || field.value === '$ADDRESS_STATE') {
 
         var input = $('<select/>');
+        input.addClass(that.settings.selectInputClasses);
 
         field.options = [];
         if(field.value === '$ADDRESS_STATE_POSTAL_ABBREV' || field.value === '$ADDRESS_STATE') {
-        	console.log('asd');
           field.options = that._data.STATES;
           delete field.options_hash;
         }
@@ -154,8 +159,9 @@
       } else {
         var input = $('<input type="text" />')
           .attr('placeholder', label_name);
+        input.addClass(that.settings.textInputClasses);
+
       }
-      input.addClass('form-control')
 
       form_group.append(input);
       return form_group;
