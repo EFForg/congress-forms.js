@@ -14,7 +14,9 @@
     formClasses: 'form',
     selectInputClasses: 'form-control',
     formGroupClasses: 'form-group',
-    submitClasses: 'btn'
+    submitClasses: 'btn',
+    success: function () {},
+    error: function () {}
   };
 
   // The actual plugin constructor
@@ -34,7 +36,8 @@
 
       var form = $('<form/>').addClass(this.settings.formClasses);
       this.retrieveFormElements(form);
-
+      console.log(form);
+      $(form).on('submit', this.submitForm.bind(this));
     },
     // Get's required form fields for the legislators and generates inputs
     retrieveFormElements: function(form) {
@@ -54,7 +57,11 @@
       });
 
     },
-
+    submitForm: function (ev) {
+      console.log(this, 'a')
+      this.settings.success();
+      return false;
+    },
     generateForm: function(groupedData, form) {
       var that = this;
 

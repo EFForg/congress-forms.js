@@ -18,7 +18,10 @@
     $(function() {
         $("#element").contactCongress({
             bioguide_ids: ['P000197'],
-            labels: false
+            labels: false,
+            success: function () {
+                alert('a');
+            }
         });
     });
     </script>
