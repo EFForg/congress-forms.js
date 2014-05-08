@@ -18,6 +18,10 @@
     $(function() {
         $("#element").contactCongress({
             bioguide_ids: ['P000197'],
+            values: {
+              '$MESSAGE': 'Hello Mr Politician, My name is Yoghurt!',
+              '$SUBJECT': 'Introduction'
+            },
             labels: false,
             success: function () {
                 alert('a');

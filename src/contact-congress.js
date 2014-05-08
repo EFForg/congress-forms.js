@@ -1,4 +1,4 @@
-; // close other statements for safety
+ ; // close other statements for safety
 (function($, window, document, undefined) {
 
   // This code is based off the jquery boilerplate project
@@ -11,6 +11,7 @@
     bioguide_ids: [],
     labelClasses: '',
     textInputClasses: 'form-control',
+    textareaClasses: 'form-control',
     formClasses: 'form',
     selectInputClasses: 'form-control',
     formGroupClasses: 'form-group',
@@ -49,7 +50,7 @@
           bio_ids: this.settings.bioguide_ids
         },
         success: function(data) {
-          // TODO - throw on server error 
+          // TODO - throw on server error
           var groupedData = that.groupCommonFields(data);
           that.generateForm(groupedData, form)
         }
@@ -163,13 +164,23 @@
             .text(option.name);
           input.append(optionEl);
         });
+      } else if(field_name === '$MESSAGE') {
+
+        var input = $('<textarea />')
+          .attr('id', field_name)
+          .attr('placeholder', label_name);
+        input.addClass(that.settings.textareaClasses);
       } else {
         var input = $('<input type="text" />')
           .attr('placeholder', label_name);
         input.addClass(that.settings.textInputClasses);
 
       }
+      if(that.settings.values && typeof that.settings.values[field_name] !== 'undefined') {
+        input.val(that.settings.values[field_name]);
+      }
 
+      input.attr('id', field_name).attr('name', field_name);
       form_group.append(input);
       return form_group;
     },
