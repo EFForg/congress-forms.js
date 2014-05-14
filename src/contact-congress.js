@@ -6,7 +6,7 @@
   // Create the defaults once
   var pluginName = "contactCongress";
   var defaults = {
-    contactCongressServer: 'http://ec2-54-215-28-56.us-west-1.compute.amazonaws.com:3000',
+    contactCongressServer: 'https://congressforms.eff.org',
     labels: true,
     bioguide_ids: [],
     labelClasses: '',
@@ -37,7 +37,7 @@
 
       var form = $('<form/>').addClass(this.settings.formClasses);
       this.retrieveFormElements(form);
-      console.log(form);
+      //console.log(form);
       $(form).on('submit', this.submitForm.bind(this));
     },
     // Get's required form fields for the legislators and generates inputs
@@ -59,7 +59,7 @@
 
     },
     submitForm: function (ev) {
-      console.log(this, 'a')
+      //console.log(this, 'a')
       this.settings.success();
       return false;
     },
@@ -80,7 +80,9 @@
 
       // Generate a <fieldset> for each extra legislator fields
       $.each(groupedData.individual_fields, function(legislator, fields) {
-        var fieldset = $('<fieldset/>');
+        console.log(legislator);
+        var fieldset = $('<fieldset/>').attr('id', legislator);
+        fieldset.append($('<label>').text(legislator));
         //fieldset.append('<legend>' + legislator + '</legend>');
         $.each(fields, function(index, field) {
           var form_group = that.generateFormGroup(field);
@@ -147,7 +149,7 @@
           });
           delete field.options_hash;
         };
-        console.log(typeof field.options_hash)
+        //console.log(typeof field.options_hash)
         if (typeof field.options_hash === 'string' || !field.options_hash) {
           field.options_hash = [];
         }
@@ -158,7 +160,7 @@
           input.append(optionEl);
         });
         $.each(field.options, function(key, option) {
-        	console.log(option);
+        	//console.log(option);
           var optionEl = $('<option/>')
             .attr('value', option.value)
             .text(option.name);
@@ -253,7 +255,7 @@
         // If we only have 1 legislator, their fields are the common fields
         groupedData.common_fields = data[that.settings.bioguide_ids[0]].required_actions;
       }
-      console.log(groupedData);
+      //console.log(groupedData);
       return groupedData;
     },
 
