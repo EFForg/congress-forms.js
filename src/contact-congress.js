@@ -15,6 +15,7 @@
     formClasses: 'form',
     selectInputClasses: 'form-control',
     formGroupClasses: 'form-group',
+    legislatorLabelClasses: '',
     submitClasses: 'btn',
     success: function () {},
     error: function () {}
@@ -82,7 +83,7 @@
       $.each(groupedData.individual_fields, function(legislator, fields) {
         console.log(legislator);
         var fieldset = $('<fieldset/>').attr('id', legislator);
-        fieldset.append($('<label>').text(legislator));
+        fieldset.append($('<label>').text(legislator).addClass(that.settings.legislatorLabelClasses));
         //fieldset.append('<legend>' + legislator + '</legend>');
         $.each(fields, function(index, field) {
           var form_group = that.generateFormGroup(field);
