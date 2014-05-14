@@ -18,6 +18,7 @@
     legislatorLabelClasses: '',
     submitClasses: 'btn',
     success: function () {},
+    onRender: function () {},
     error: function () {}
   };
 
@@ -98,6 +99,7 @@
       form.append(submitButton);
 
       $(that.element).append(form);
+      that.settings.onRender();
     },
     generateFormGroup: function(field) {
       var that = this;
