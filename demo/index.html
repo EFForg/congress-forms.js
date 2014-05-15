@@ -17,14 +17,40 @@
     <script>
     $(function() {
         $("#element").contactCongress({
-            bioguide_ids: ['P000197', 'B000711', 'F000062'],
+            bioguide_ids: ['P000197', 'B000711'], //, 'F000062'],
+            debug: true,
             values: {
-              '$MESSAGE': 'Hello Mr Politician, My name is Yoghurt!',
-              '$SUBJECT': 'Introduction'
+              '$MESSAGE': 'My campaign message',
+              '$NAME_FIRST': 'Joe',
+              '$NAME_LAST': 'Blogs',
+              '$ADDRESS_STREET': '100 George St',
+              '$ADDRESS_CITY': 'Georgia',
+              '$EMAIL': 'thepresident@example.com',
+              '$SUBJECT': 'Test',
+              '$MESSAGE': 'Hello, end test',
+              '$NAME_PREFIX': 'Mr',
+              '$PHONE': 1234567890,
+              '$ADDRESS_ZIP5': 94110,
+              '$ADDRESS_ZIP4': 1623
             },
             labels: false,
             success: function () {
-                alert('a');
+            },
+
+            onLegislatorSubmit: function(legislatorId, legislatorFieldSet) {
+              console.log(arguments);
+            },
+            onLegislatorSuccess: function(legislatorId, legislatorFieldSet) {
+              $('.form-group', legislatorFieldSet).slideUp(400);
+              legislatorFieldSet.append('<p>Success</p>');
+            },
+            onLegislatorError: function(legislatorId, legislatorFieldSet) {
+              $('.form-group', legislatorFieldSet).slideUp(400);
+              legislatorFieldSet.append('<p>Error</p>');
+            },
+            onLegislatorCaptcha: function(legislatorId, legislatorFieldSet) {
+              $('.form-group', legislatorFieldSet).slideUp(400);
+              legislatorFieldSet.append('<p>Captcha</p>');
             }
         });
     });

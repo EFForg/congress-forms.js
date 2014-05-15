@@ -8,6 +8,9 @@
   var defaults = {
     contactCongressServer: 'https://congressforms.eff.org',
     labels: true,
+    // Debug, doesn't send emails just triggers error and success callbacks
+    debug: false,
+    values: {},
     bioguide_ids: [],
     labelClasses: '',
     textInputClasses: 'form-control',
@@ -17,8 +20,16 @@
     formGroupClasses: 'form-group',
     legislatorLabelClasses: '',
     submitClasses: 'btn',
+    // Callbacks
     success: function () {},
     onRender: function () {},
+
+    // Legislator callbacks are called for each email ajax request
+    onLegislatorSubmit: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptch: function (legislatorId, legislatorFieldset) {},
+    onLegislatorSuccess: function (legislatorId, legislatorFieldset) {},
+    onLegislatorError: function (legislatorId, legislatorFieldset) {},
+
     error: function () {}
   };
 
@@ -33,6 +44,9 @@
   }
 
   Plugin.prototype = {
+
+    completedEmails: 0,
+    legislatorCount: 0,
 
     init: function() {
       var that = this;
@@ -62,6 +76,98 @@
     },
     submitForm: function (ev) {
       //console.log(this, 'a')
+      var that = this;
+
+
+
+      var form = $(ev.currentTarget);
+      // Select common field set
+      var commonFieldset = $('#' + pluginName + '-common-fields', form);
+      var commonData = commonFieldset.serializeObject();
+      console.log(commonData);
+      $('input, textarea, select, button' , form).attr('disabled', 'disabled');
+      $.each($('.' + pluginName + '-legislator-fields'), function(index, legislatorFieldset) {
+        var legislatorId = $(legislatorFieldset).attr('data-legislator-id');
+        var legislatorData = $(legislatorFieldset).serializeObject();
+        var fullData = $.extend({}, commonData, legislatorData);
+        var captcha_uid = that.generateUID();
+        console.log(legislatorId);
+        that.settings.onLegislatorSubmit(legislatorId, $(legislatorFieldset));
+        if(that.settings.debug) {
+          // Simulate error and success per legislator 50/50 of the time
+          setTimeout(function () {
+            var randomNumber = Math.ceil(Math.random() * 3);
+            switch (randomNumber) {
+              case 1:
+                that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
+                break;
+              case 2:
+                that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
+                break;
+              case 3:
+                that.settings.onLegislatorCaptcha(legislatorId, $(legislatorFieldset));
+                break;
+            }
+          }, 500);
+        } else {
+        /*
+        $.ajax({
+          url: that.settings.contactCongressServer + '/fill-out-form',
+          type: 'post',
+          data: {
+            bio_id: legislatorId,
+            uid: captcha_uid,
+            fields: fullData
+          },
+          success: function( data ) {
+            console.log(arguments);
+          }
+        });
+        */
+        }
+
+      });
+
+      return false;
+      // Some hardcoded zip 4 thing
+      data['$ADDRESS_ZIP4'] = 1623;
+      data['$TOPIC'] = 'AGR';
+      data['$NAME_PREFIX'] = 'MR';
+      console.log(data);
+
+
+      /*
+          var that = this;
+      that.$el.find('input, textarea, button, select').attr('disabled', 'disabled');
+      if(Data.legislators[that.model.get('bioguide_id')]) {
+        var zip4 =  Data.legislators[that.model.get('bioguide_id')].zip4;
+        data['$ADDRESS_ZIP4'] = zip4;
+      }
+      $.ajax({
+        url: config.CONTACT_CONGRESS_SERVER + '/fill-out-form',
+        type: 'post',
+        data: {
+          bio_id: this.model.get('bioguide_id'),
+          uid: that.captcha_uid,
+          fields: data
+        },
+        success: function( data ) {
+          console.log(arguments);
+          if(data.status === 'captcha_needed') {
+            $('.captcha-container').append(Mustache.render(captchaTemplate, {captcha_url: data.url}));
+          } else if (data.status === 'error') {
+            that.$el.find('input, textarea, button, select').removeAttr('disabled');
+            $('.form-error').slideDown(200).delay(4500).slideUp(200);
+            Events.trigger('BIOGUIDE_ERROR');
+
+          } else {
+            $('.form-success').slideDown(200);
+          }
+        }
+      });
+
+      return false;
+      */
       this.settings.success();
       return false;
     },
@@ -72,7 +178,7 @@
       var required_actions = groupedData.common_fields;
 
       // Generate a <fieldset> for common fields
-      var commonFieldsFieldSet = $('<fieldset/>');
+      var commonFieldsFieldSet = $('<fieldset/>').attr('id', pluginName + '-common-fields');
       //commonFieldsFieldSet.append('<legend>Common Fields</legend>');
       $.each(required_actions, function(index, field) {
         var form_group = that.generateFormGroup(field);
@@ -83,7 +189,7 @@
       // Generate a <fieldset> for each extra legislator fields
       $.each(groupedData.individual_fields, function(legislator, fields) {
         console.log(legislator);
-        var fieldset = $('<fieldset/>').attr('id', legislator);
+        var fieldset = $('<fieldset/>').attr('data-legislator-id', legislator).addClass(pluginName + '-legislator-fields');
         fieldset.append($('<label>').text(legislator).addClass(that.settings.legislatorLabelClasses));
         //fieldset.append('<legend>' + legislator + '</legend>');
         $.each(fields, function(index, field) {
@@ -271,6 +377,18 @@
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       }).join(" ");
     },
+
+    // Generates UID's for request to congress form server
+    generateUID: function() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for( var i=0; i < 10; i++ )
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+    },
+
     _data: {
       STATES: [{
         name: 'ALABAMA',
@@ -452,6 +570,24 @@
       }]
     }
   };
+
+  // Extend jquery
+  $.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+    });
+    return o;
+  };
+
 
   // A really lightweight plugin wrapper around the constructor,
   // preventing against multiple instantiations
