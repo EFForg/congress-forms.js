@@ -288,10 +288,10 @@
       return false;
     },
     generateCaptchaForm: function (captchaUrl) {
-      var formGroup = $('<div/>').addClass('form-group').addClass('form-control ' + pluginName +'-container');
-      var label = $('<label/>').text('Please fill out this captcha').addClass('form-control ' + pluginName +'-label');
+      var formGroup = $('<div/>').addClass('form-group').addClass('form-control ' + pluginName +'-captcha-container');
+      var label = $('<label/>').text('Please fill out this captcha').addClass('form-control ' + pluginName +'-captcha-label');
       formGroup.append(label);
-      var img = $('<img/>').attr('src', captchaUrl).addClass('form-control ' + pluginName +'-image');
+      var img = $('<img/>').attr('src', captchaUrl).addClass('form-control ' + pluginName +'-captcha-image');
       formGroup.append(img);
       var input = $('<input/>').attr('type', 'text').addClass('form-control ' + pluginName +'-captcha');
       formGroup.append(input);
