@@ -119,6 +119,9 @@
                   break;
                 case 3:
                   that.settings.onLegislatorCaptcha(legislatorId, $(legislatorFieldset));
+
+                  var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png');
+                  $(legislatorFieldset).append(captchaForm);
                   break;
               }
             }, 500);
@@ -168,6 +171,8 @@
                 break;
               case 3:
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
+                var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png');
+                $(commonFieldset).append(captchaForm);
                 break;
             }
           }, 500);
