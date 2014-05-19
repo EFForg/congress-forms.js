@@ -17,8 +17,8 @@
     <script>
     $(function() {
         $("#element").contactCongress({
-            bioguide_ids: ['P000197', 'B000711'], //, 'F000062'],
-            debug: true,
+            bioguide_ids: ['C000880', 'F000062'], //, 'F000062'],
+            debug: false,
             values: {
               '$MESSAGE': 'My campaign message',
               '$NAME_FIRST': 'Joe',
@@ -38,7 +38,7 @@
             },
 
             onLegislatorSubmit: function(legislatorId, legislatorFieldSet) {
-              console.log(arguments);
+              //console.log(arguments);
             },
             onLegislatorSuccess: function(legislatorId, legislatorFieldSet) {
               $('.form-group', legislatorFieldSet).slideUp(400);
