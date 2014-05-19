@@ -289,9 +289,9 @@
     },
     generateCaptchaForm: function (captchaUrl) {
       var formGroup = $('<div/>').addClass('form-group').addClass(pluginName +'-captcha-container');
-      var label = $('<label/>').text('Please fill out this captcha').addClass('form-control ' + pluginName +'-captcha-label');
+      var label = $('<label/>').text('Please fill out this captcha').addClass(pluginName +'-captcha-label');
       formGroup.append(label);
-      var img = $('<img/>').attr('src', captchaUrl).addClass('form-control ' + pluginName +'-captcha-image');
+      var img = $('<img/>').attr('src', captchaUrl).addClass(pluginName +'-captcha-image');
       formGroup.append(img);
       var input = $('<input/>').attr('type', 'text').addClass('form-control ' + pluginName +'-captcha');
       formGroup.append(input);
