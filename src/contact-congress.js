@@ -121,10 +121,11 @@
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
                   break;
                 case 3:
-                  that.settings.onLegislatorCaptcha(legislatorId, $(legislatorFieldset));
 
                   var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png', legislatorId, captcha_uid);
                   $(legislatorFieldset).append(captchaForm);
+                  that.settings.onLegislatorCaptcha(legislatorId, $(legislatorFieldset));
+
                   break;
               }
             }, 500);
