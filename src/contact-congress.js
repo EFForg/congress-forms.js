@@ -26,7 +26,7 @@
 
     // Legislator callbacks are called for each email ajax request
     onLegislatorSubmit: function (legislatorId, legislatorFieldset) {},
-    onLegislatorCaptch: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptcha: function (legislatorId, legislatorFieldset) {},
     onLegislatorCaptchSubmit: function (legislatorId, legislatorFieldset) {},
     onLegislatorCaptchSuccess: function (legislatorId, legislatorFieldset) {},
     onLegislatorCaptchError: function (legislatorId, legislatorFieldset) {},
@@ -143,9 +143,10 @@
                   that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
                   //SUCCESS GOES HERE
                 } else if (data.status === 'captcha_needed'){
-                  that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
+
                   var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
                   $(legislatorFieldset).append(captchaForm);
+                  that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
                 } else {
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
                 }
@@ -173,9 +174,9 @@
                 that.settings.onLegislatorError(legislator, $(commonFieldset));
                 break;
               case 3:
-                that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
                 var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png', legislator, captcha_uid);
                 $(commonFieldset).append(captchaForm);
+                that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
                 break;
             }
           }, 500);
@@ -194,9 +195,9 @@
                 that.settings.onLegislatorSuccess(legislator, $(commonFieldset));
                 //SUCCESS GOES HERE
               } else if (data.status === 'captcha_needed'){
+              var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
+              $(commonFieldset).append(captchaForm);
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
-                var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
-                $(commonFieldset).append(captchaForm);
               } else {
                 that.settings.onLegislatorError(legislator, $(commonFieldset));
               }
