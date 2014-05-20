@@ -145,9 +145,10 @@
                   //SUCCESS GOES HERE
                 } else if (data.status === 'captcha_needed'){
 
-                  var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
-                  $(legislatorFieldset).append(captchaForm);
                   that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
+
+                                    var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
+                                    $(legislatorFieldset).append(captchaForm);
                 } else {
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
                 }
