@@ -120,7 +120,7 @@
                 case 3:
                   that.settings.onLegislatorCaptcha(legislatorId, $(legislatorFieldset));
 
-                  var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png');
+                  var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png', legislatorId, captcha_uid);
                   $(legislatorFieldset).append(captchaForm);
                   break;
               }
@@ -141,7 +141,7 @@
                   //SUCCESS GOES HERE
                 } else if (data.status === 'captcha_needed'){
                   that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
-                  var captchaForm = that.generateCaptchaForm(data.url);
+                  var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
                   $(legislatorFieldset).append(captchaForm);
                 } else {
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
@@ -171,7 +171,7 @@
                 break;
               case 3:
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
-                var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png');
+                var captchaForm = that.generateCaptchaForm('http://i.imgur.com/BG2yMUp.png', legislator, captcha_uid);
                 $(commonFieldset).append(captchaForm);
                 break;
             }
@@ -192,7 +192,7 @@
                 //SUCCESS GOES HERE
               } else if (data.status === 'captcha_needed'){
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
-                var captchaForm = that.generateCaptchaForm(data.url);
+                var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
                 $(commonFieldset).append(captchaForm);
               } else {
                 that.settings.onLegislatorError(legislator, $(commonFieldset));
@@ -283,17 +283,36 @@
       $(that.element).append(form);
       that.settings.onRender();
     },
-    submitCaptchaForm : function (answer) {
-      console.log('answer', answer);
+    submitCaptchaForm : function (answerEl) {
+      var that = this;
+      var answer = $(answerEl).val();
+      var captchaUID = $(answerEl).attr('data-captcha-uid');
+      var legislatorId = $(answerEl).attr('data-captcha-legislator-id');
+      var legislatorFieldset = $('fieldset[data-legislator-id="'+legislatorId+'"]');
+      that.settings.onLegislatorSubmit(legislatorId, $(legislatorFieldset));
+  /*
+        $.each($('.' + pluginName + '-legislator-fields'), function(index, legislatorFieldset) {
+          var legislatorId = $(legislatorFieldset).attr('data-legislator-id');
+          var legislatorData = $(legislatorFieldset).serializeObject();
+          console.log(legislatorId, legislatorFieldset, legislatorData);
+          var fullData = $.extend({}, commonData, legislatorData);
+          var captcha_uid = that.generateUID();
+          that.settings.onLegislatorSubmit(legislatorId, $(legislatorFieldset));
+*/
+
+      console.log('answer', answer,captchaUID, legislatorId, legislatorFieldset);
       return false;
     },
-    generateCaptchaForm: function (captchaUrl) {
+    generateCaptchaForm: function (captchaUrl, legislatorId, captchaUID) {
+      var that = this;
       var formGroup = $('<div/>').addClass('form-group').addClass(pluginName +'-captcha-container');
       var label = $('<label/>').text('Please fill out this captcha').addClass(pluginName +'-captcha-label');
       formGroup.append(label);
       var img = $('<img/>').attr('src', captchaUrl).addClass(pluginName +'-captcha-image');
       formGroup.append(img);
-      var input = $('<input/>').attr('type', 'text').addClass('form-control ' + pluginName +'-captcha');
+      var input = $('<input/>').attr('type', 'text').addClass('form-control ' + pluginName +'-captcha')
+          .attr('data-captcha-legislator-id', legislatorId)
+          .attr('data-captcha-uid', captchaUID);
       formGroup.append(input);
       var submitButton = $('<button>').attr('type', 'button').addClass('btn btn-primary ' + pluginName +'-captcha-button').text('Submit Captcha');
       formGroup.append(submitButton);
