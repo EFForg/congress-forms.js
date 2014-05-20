@@ -515,10 +515,18 @@
     // e.g. $NAME_FIRST -> Name First
     // TODO - Make even more readable form labels, probably manually
     _format_label: function(string) {
-      var string_arr = string.replace("$", "").replace("_", " ").split(" ");
-      return $.map(string_arr, function(word) {
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      }).join(" ");
+      var manual_labels = {
+        '$NAME_LAST': 'Last Name',
+        '$NAME_FIRST': 'First Name'
+      }
+      if(typeof manual_labels[string] !== 'undefined') {
+          return manual_labels[string];
+      } else {
+        var string_arr = string.replace("$", "").replace("_", " ").split(" ");
+        return $.map(string_arr, function(word) {
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }).join(" ");
+      }
     },
 
     // Generates UID's for request to congress form server
