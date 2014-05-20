@@ -27,9 +27,9 @@
     // Legislator callbacks are called for each email ajax request
     onLegislatorSubmit: function (legislatorId, legislatorFieldset) {},
     onLegislatorCaptcha: function (legislatorId, legislatorFieldset) {},
-    onLegislatorCaptchSubmit: function (legislatorId, legislatorFieldset) {},
-    onLegislatorCaptchSuccess: function (legislatorId, legislatorFieldset) {},
-    onLegislatorCaptchError: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchaSubmit: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchaSuccess: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchaError: function (legislatorId, legislatorFieldset) {},
     onLegislatorSuccess: function (legislatorId, legislatorFieldset) {},
     onLegislatorError: function (legislatorId, legislatorFieldset) {},
 
@@ -195,8 +195,8 @@
                 that.settings.onLegislatorSuccess(legislator, $(commonFieldset));
                 //SUCCESS GOES HERE
               } else if (data.status === 'captcha_needed'){
-              var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
-              $(commonFieldset).append(captchaForm);
+                var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
+                $(commonFieldset).append(captchaForm);
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
               } else {
                 that.settings.onLegislatorError(legislator, $(commonFieldset));
@@ -307,6 +307,18 @@
             break;
         }
         }, 1500)
+      } else {
+        $.ajax({
+          url: that.settings.contactCongressServer + '/fill-out-captcha',
+          type: 'post',
+          data: {
+            uid: captchaUID,
+            answer: answer
+          },
+          success: function( data ) {
+            console.log('ass', arguments);
+          }
+        });
       }
   /*
         $.each($('.' + pluginName + '-legislator-fields'), function(index, legislatorFieldset) {
@@ -323,7 +335,7 @@
     },
     generateCaptchaForm: function (captchaUrl, legislatorId, captchaUID) {
       var that = this;
-      var formGroup = $('<div/>').addClass('form-group').addClass(pluginName +'-captcha-container');
+      var formGroup = $('<div/>').addClass(pluginName +'-captcha-container');
       var label = $('<label/>').text('Please fill out this captcha').addClass(pluginName +'-captcha-label');
       formGroup.append(label);
       var img = $('<img/>').attr('src', captchaUrl).addClass(pluginName +'-captcha-image');
