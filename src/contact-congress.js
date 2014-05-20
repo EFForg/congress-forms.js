@@ -27,6 +27,9 @@
     // Legislator callbacks are called for each email ajax request
     onLegislatorSubmit: function (legislatorId, legislatorFieldset) {},
     onLegislatorCaptch: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchSubmit: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchSuccess: function (legislatorId, legislatorFieldset) {},
+    onLegislatorCaptchError: function (legislatorId, legislatorFieldset) {},
     onLegislatorSuccess: function (legislatorId, legislatorFieldset) {},
     onLegislatorError: function (legislatorId, legislatorFieldset) {},
 
@@ -289,7 +292,19 @@
       var captchaUID = $(answerEl).attr('data-captcha-uid');
       var legislatorId = $(answerEl).attr('data-captcha-legislator-id');
       var legislatorFieldset = $('fieldset[data-legislator-id="'+legislatorId+'"]');
-      that.settings.onLegislatorSubmit(legislatorId, $(legislatorFieldset));
+      that.settings.onLegislatorCaptchaSubmit(legislatorId, $(legislatorFieldset));
+
+      if(that.settings.debug) {
+        var randomNumber = Math.ceil(Math.random() * 2);
+        switch (randomNumber) {
+          case 1:
+            that.settings.onLegislatorCaptchaSuccess(legislator, $(commonFieldset));
+            break;
+          case 2:
+            that.settings.onLegislatorCaptchaError(legislator, $(commonFieldset));
+            break;
+        }
+      }
   /*
         $.each($('.' + pluginName + '-legislator-fields'), function(index, legislatorFieldset) {
           var legislatorId = $(legislatorFieldset).attr('data-legislator-id');
