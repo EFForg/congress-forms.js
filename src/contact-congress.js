@@ -61,7 +61,7 @@
 
       // Detect click of captcha form
       $('body').on('click', '.' + pluginName + '-captcha-button', function (ev) {
-        var answerEl = $(ev.currentTarget).parent().find('input');
+        var answerEl = $(ev.currentTarget).parents('.' + pluginName + 'captch-container').find('.' + pluginName + '-captcha');
         that.submitCaptchaForm(answerEl);
       });
       // Detect enter key on input
@@ -147,8 +147,8 @@
 
                   that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
 
-                                    var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
-                                    $(legislatorFieldset).append(captchaForm);
+                  var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
+                  $(legislatorFieldset).append(captchaForm);
                 } else {
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
                 }
