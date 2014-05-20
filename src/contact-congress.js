@@ -61,7 +61,7 @@
 
       // Detect click of captcha form
       $('body').on('click', '.' + pluginName + '-captcha-button', function (ev) {
-        var answerEl = $(ev.currentTarget).parents('.' + pluginName + 'captcha-container').find('.' + pluginName + '-captcha');
+        var answerEl = $(ev.currentTarget).parents('.' + pluginName + '-captcha-container').find('.' + pluginName + '-captcha');
         that.submitCaptchaForm(answerEl);
       });
       // Detect enter key on input
