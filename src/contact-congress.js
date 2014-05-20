@@ -112,7 +112,7 @@
           if(that.settings.debug) {
             // Simulate error and success per legislator 50/50 of the time
             setTimeout(function () {
-              var randomNumber = 3;//Math.ceil(Math.random() * 3);
+              var randomNumber = Math.ceil(Math.random() * 3);
               switch (randomNumber) {
                 case 1:
                   that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
@@ -338,7 +338,7 @@
     generateCaptchaForm: function (captchaUrl, legislatorId, captchaUID) {
       var that = this;
       var formGroup = $('<div/>').addClass(pluginName +'-captcha-container');
-      var label = $('<label/>').text('Please fill out this captcha').addClass(pluginName +'-captcha-label');
+      var label = $('<label/>').text('Type the text in the image to send your message').addClass(pluginName +'-captcha-label');
       formGroup.append(label);
       var img = $('<img/>').attr('src', captchaUrl).addClass(pluginName +'-captcha-image');
       formGroup.append(img);
