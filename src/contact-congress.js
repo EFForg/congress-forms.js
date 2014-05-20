@@ -112,7 +112,7 @@
           if(that.settings.debug) {
             // Simulate error and success per legislator 50/50 of the time
             setTimeout(function () {
-              var randomNumber = Math.ceil(Math.random() * 3);
+              var randomNumber = 3;//Math.ceil(Math.random() * 3);
               switch (randomNumber) {
                 case 1:
                   that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
