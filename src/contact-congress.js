@@ -296,14 +296,16 @@
 
       if(that.settings.debug) {
         var randomNumber = Math.ceil(Math.random() * 2);
+        setTimeout(function () {
         switch (randomNumber) {
           case 1:
-            that.settings.onLegislatorCaptchaSuccess(legislator, $(commonFieldset));
+            that.settings.onLegislatorCaptchaSuccess(legislatorId, $(commonFieldset));
             break;
           case 2:
-            that.settings.onLegislatorCaptchaError(legislator, $(commonFieldset));
+            that.settings.onLegislatorCaptchaError(legislatorId, $(commonFieldset));
             break;
         }
+        }, 1500)
       }
   /*
         $.each($('.' + pluginName + '-legislator-fields'), function(index, legislatorFieldset) {
