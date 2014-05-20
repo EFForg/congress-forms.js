@@ -299,10 +299,10 @@
         setTimeout(function () {
         switch (randomNumber) {
           case 1:
-            that.settings.onLegislatorCaptchaSuccess(legislatorId, $(commonFieldset));
+            that.settings.onLegislatorCaptchaSuccess(legislatorId, $(legislatorFieldset));
             break;
           case 2:
-            that.settings.onLegislatorCaptchaError(legislatorId, $(commonFieldset));
+            that.settings.onLegislatorCaptchaError(legislatorId, $(legislatorFieldset));
             break;
         }
         }, 1500)
