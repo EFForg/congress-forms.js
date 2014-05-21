@@ -435,8 +435,29 @@
       }
 
       input.attr('id', field_name).attr('name', field_name);
+      input.attr('required', 'required');
+      var fieldData = that.fieldData;
+      if(fieldData[field_name]) {
+        $.each(fieldData[field_name], function (attr, attrValue) {
+          input.attr(attr, attrValue);
+        })
+      }
       form_group.append(input);
       return form_group;
+    },
+    fieldData: {
+      '$EMAIL': {
+        'type': 'email'
+      },
+      '$NAME_FIRST': {
+        'maxlength': '20'
+      },
+      '$NAME_LAST': {
+        'maxlength': '20'
+      },
+      '$ADDRESS_ZIP5': {
+        'pattern': '[0-9]{5}'
+      }
     },
     groupCommonFields: function(data) {
       // TODO - This needs a refactor, don't think this was done well
