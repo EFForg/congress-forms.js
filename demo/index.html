@@ -17,9 +17,22 @@
     <script>
     $(function() {
         $("#element").contactCongress({
-            bioguide_ids: ['C000880'], //, 'F000062'],
+            bioguide_ids: ['P000608'], //, 'F000062'],
             debug: false,
-            /*
+            values: {
+              '$MESSAGE': 'My campaign message',
+              '$NAME_FIRST': 'Joe',
+              '$NAME_LAST': 'Blogs',
+              '$ADDRESS_STREET': '4350 Executive Drive',
+              '$ADDRESS_CITY': 'San Diego',
+              '$EMAIL': 'thepresident@example.com',
+              '$SUBJECT': 'Test',
+              '$MESSAGE': 'Hello, end test',
+              '$NAME_PREFIX': 'Mr',
+              '$PHONE': 1234567890,
+              '$ADDRESS_ZIP5': 92121,
+              '$ADDRESS_ZIP4': 2115
+            },/*
             values: {
               '$MESSAGE': 'My campaign message',
               '$NAME_FIRST': 'Joe',

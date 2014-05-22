@@ -144,11 +144,9 @@
                   that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
                   //SUCCESS GOES HERE
                 } else if (data.status === 'captcha_needed'){
-
-                  that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
-
                   var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
                   $(legislatorFieldset).append(captchaForm);
+                  that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
                 } else {
                   that.settings.onLegislatorError(legislatorId, $(legislatorFieldset));
                 }
