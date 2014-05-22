@@ -279,7 +279,11 @@
           fieldset.append(form_group);
         });
         form.append(fieldset);
-      })
+      });
+      if(that.settings.bioguide_ids.length === 1) {
+        var legislator = that.settings.bioguide_ids[0];
+        commonFieldsFieldSet.attr('data-legislator-id', legislator).addClass(pluginName + '-legislator-fields').prepend($('<label>').text(legislator).addClass(that.settings.legislatorLabelClasses));
+      }
 
       // Attach submit button
       var submitButton = $('<input type="submit"/>');
