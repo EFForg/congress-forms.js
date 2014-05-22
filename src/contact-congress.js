@@ -320,7 +320,7 @@
             answer: answer
           },
           success: function( data ) {
-            if(data.message === 'success') {
+            if(data.status === 'success') {
               that.settings.onLegislatorCaptchaSuccess(legislatorId, $(legislatorFieldset));
             } else {
               that.settings.onLegislatorCaptchaError(legislatorId, $(legislatorFieldset));
