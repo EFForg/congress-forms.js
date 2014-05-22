@@ -320,7 +320,11 @@
             answer: answer
           },
           success: function( data ) {
-            console.log('ass', arguments);
+            if(data.message === 'success') {
+              that.settings.onLegislatorCaptchaSuccess(legislatorId, $(legislatorFieldset));
+            } else {
+              that.settings.onLegislatorCaptchaError(legislatorId, $(legislatorFieldset));
+            }
           }
         });
       }
