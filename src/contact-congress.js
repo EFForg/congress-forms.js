@@ -130,21 +130,23 @@
               }
             }, 500);
           } else {
-
             $.ajax({
               url: that.settings.contactCongressServer + '/fill-out-form',
               type: 'post',
+              xhrFields: {
+                withCredentials: true
+              },
               data: {
                 bio_id: legislatorId,
-                uid: captcha_uid,
                 fields: fullData
               },
               success: function( data ) {
+                console.log('what', data)
                 if(data.status === 'success') {
                   that.settings.onLegislatorSuccess(legislatorId, $(legislatorFieldset));
                   //SUCCESS GOES HERE
                 } else if (data.status === 'captcha_needed'){
-                  var captchaForm = that.generateCaptchaForm(data.url, legislatorId, captcha_uid);
+                  var captchaForm = that.generateCaptchaForm(data.url, legislatorId, data.uid);
                   $(legislatorFieldset).append(captchaForm);
                   that.settings.onLegislatorCaptcha(legislator, $(legislatorFieldset));
                 } else {
@@ -187,15 +189,16 @@
             type: 'post',
             data: {
               bio_id: legislator,
-              uid: captcha_uid,
               fields: commonData
             },
             success: function( data ) {
+              console.log('hey', data);
               if(data.status === 'success') {
                 that.settings.onLegislatorSuccess(legislator, $(commonFieldset));
                 //SUCCESS GOES HERE
               } else if (data.status === 'captcha_needed'){
-                var captchaForm = that.generateCaptchaForm(data.url, legislator, captcha_uid);
+                alert(data.uid);
+                var captchaForm = that.generateCaptchaForm(data.url, legislator, data.uid);
                 $(commonFieldset).append(captchaForm);
                 that.settings.onLegislatorCaptcha(legislator, $(commonFieldset));
               } else {
@@ -315,6 +318,9 @@
         $.ajax({
           url: that.settings.contactCongressServer + '/fill-out-captcha',
           type: 'post',
+          xhrFields: {
+            withCredentials: true
+          },
           data: {
             uid: captchaUID,
             answer: answer
