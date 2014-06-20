@@ -23,5 +23,5 @@ var options = {
   labels: true // Do you want the inputs to have labels?
 };
 
-$("#form-container").contactCongress(options);
+$("#form-container").congressForms(options);
 ```

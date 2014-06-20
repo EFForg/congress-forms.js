@@ -1,6 +1,6 @@
 {
-	"name": "contact-congress",
-	"title": "Contact Congress",
+	"name": "congress-forms",
+	"title": "Congress Forms",
 	"description": "A widget for building forms for contacting congress.",
 	"keywords": [
 		"contact congress"
@@ -19,10 +19,10 @@
 			"url": ""
 		}
 	],
-	"bugs": "https://github.com/efforg/contact-congress.js/issues",
-	"homepage": "https://github.com/efforg/contact-congress.js",
-	"docs": "https://github.com/efforg/contact-congress.js#readme",
-	"download": "https://github.com/efforg/contact-congress.js/archive/master.zip",
+	"bugs": "https://github.com/efforg/congress-forms.js/issues",
+	"homepage": "https://github.com/efforg/congress-forms.js",
+	"docs": "https://github.com/efforg/congress-forms.js#readme",
+	"download": "https://github.com/efforg/congress-forms.js/archive/master.zip",
 	"dependencies": {
 		"jquery": ">=1.4"
 	}

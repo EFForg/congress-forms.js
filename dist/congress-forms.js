@@ -1,10 +1,18 @@
+/*
+ *  Congress Forms - v0.0.1
+ *  A widget for building forms for contacting congress.
+ *  https://github.com/efforg/congress-forms.js
+ *
+ *  Made by Thomas Davis
+ *  Under TBD License
+ */
  ; // close other statements for safety
 (function($, window, document, undefined) {
 
   // This code is based off the jquery boilerplate project
 
   // Create the defaults once
-  var pluginName = "contactCongress";
+  var pluginName = "congressForms";
   var defaults = {
     contactCongressServer: 'https://congressforms.eff.org',
     labels: true,

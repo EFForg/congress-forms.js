@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 
 		// Import package manifest
-		pkg: grunt.file.readJSON("contact-congress.json"),
+		pkg: grunt.file.readJSON("congress-forms.json"),
 
 		// Banner definitions
 		meta: {
@@ -20,8 +20,8 @@ module.exports = function(grunt) {
 		// Concat definitions
 		concat: {
 			dist: {
-				src: ["src/contact-congress.js"],
-				dest: "dist/contact-congress.js"
+				src: ["src/congress-forms.js"],
+				dest: "dist/congress-forms.js"
 			},
 			options: {
 				banner: "<%= meta.banner %>"
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 
 		// Lint definitions
 		jshint: {
-			files: ["src/contact-congress.js"],
+			files: ["src/congress-forms.js"],
 			options: {
 				jshintrc: ".jshintrc"
 			}
@@ -39,8 +39,8 @@ module.exports = function(grunt) {
 		// Minify definitions
 		uglify: {
 			my_target: {
-				src: ["dist/contact-congress.js"],
-				dest: "dist/contact-congress.min.js"
+				src: ["dist/congress-forms.js"],
+				dest: "dist/congress-forms.min.js"
 			},
 			options: {
 				banner: "<%= meta.banner %>"
